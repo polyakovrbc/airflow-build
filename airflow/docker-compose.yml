@@ -5,7 +5,7 @@ services:
   build:
    context: .
   environment:
-   &airflow-env
+  #&airflow-env
    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@mysql-server/${MDB}
    # For backward compatibility, with Airflow <2.3
@@ -22,7 +22,8 @@ services:
    - ./dags:/airflow/dags
    - ./logs:/airflow/logs
    - ./plugins:/airflow/plugins
-  depends_on: &airflow-dep
+  depends_on: 
+ # &airflow-dep
    redis:
     condition: service_healthy
    mysql-server:
