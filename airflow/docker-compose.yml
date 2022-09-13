@@ -72,7 +72,6 @@ services:
    entrypoint: ["/bin/bash", "-l", "-c"]
    command:
     - |
-      echo "!!!!!!!!!!!!!!!!!!!!!!!"
-      ls
-      which airflow
-      airflow --help
+      echo "INIT DB"
+      airflow db init;
+      airflow users create  --username ${WEBUSR} --firstname ${WEBUSR} --lastname ${WEBUSR} --role Admin --email ${WEBMAIL} -p ${WEBPASS} ;
