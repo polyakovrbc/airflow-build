@@ -73,4 +73,5 @@ services:
    command:
      |
       ls;
+      which airflow;
       airflow --help;
