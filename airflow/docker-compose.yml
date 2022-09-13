@@ -1,6 +1,7 @@
 version: '3.9'
 services:
- x-airflow: &airflow-main
+ x-airflow: 
+ &airflow-main
   build:
    context: .
   environment:
