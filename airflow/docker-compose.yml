@@ -63,3 +63,8 @@ services:
     test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     timeout: 20s
     retries: 10
+
+  airflow:
+   <<: *airflow-main
+   container_name: airflow
+   hostname: airflow
