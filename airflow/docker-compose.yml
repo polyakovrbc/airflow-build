@@ -64,6 +64,6 @@ services:
     retries: 10
 
   airflow:
-   <<: *airflow-main
+   *airflow-main
    container_name: airflow
    hostname: airflow
