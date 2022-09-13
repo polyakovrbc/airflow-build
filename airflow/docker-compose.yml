@@ -28,6 +28,7 @@ services:
     condition: service_healthy
    mysql-server:
     condition: service_healthy
+    
   mysql-server:
    image: mysql:5.7
    hostname: mysql-server
