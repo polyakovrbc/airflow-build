@@ -46,7 +46,7 @@ services:
    expose:
     - '3306'
    volumes:
-    - '/data/mysql:/var/lib/mysql'
+    - ./data/mysql:/var/lib/mysql
    restart: always
    healthcheck:
     test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
