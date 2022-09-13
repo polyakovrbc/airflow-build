@@ -71,7 +71,7 @@ services:
    hostname: airflow
    entrypoint: ["/bin/bash", "-l", "-c"]
    command:
-     #|
+    - |
       echo "!!!!!!!!!!!!!!!!!!!!!!!"
       ls
       which airflow
