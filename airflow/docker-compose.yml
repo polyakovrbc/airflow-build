@@ -73,5 +73,5 @@ services:
    command:
     - |
       echo "INIT DB"
-      airflow db init;
+      airflow db init &&
       airflow users create  --username ${WEBUSR} --firstname ${WEBUSR} --lastname ${WEBUSR} --role Admin --email ${WEBMAIL} -p ${WEBPASS} ;
