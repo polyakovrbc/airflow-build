@@ -70,4 +70,6 @@ services:
    container_name: airflow
    hostname: airflow
    entrypoint: ["/bin/bash", "-l", "-c"]
-   command: ls
+   command:
+     |
+      ls;
