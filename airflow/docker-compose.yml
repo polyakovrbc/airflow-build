@@ -69,9 +69,5 @@ services:
    <<: *airflow-main
    container_name: airflow
    hostname: airflow
-   entrypoint: /bin/bash
-   command:
-     - c
-     - |
-       export;
-       pwd;
+   entrypoint: ["/bin/bash", "-l", "-c"]
+   command: ls
