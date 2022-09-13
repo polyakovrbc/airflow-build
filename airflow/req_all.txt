@@ -1,0 +1,45 @@
+cachetools						      
+	category-encoders
+cgroupspy						      
+	chardet
+crcmod							      
+	configparser
+curlify							      
+	Cython
+jira							      
+	joblib
+ldap3							      
+	llvmlite
+nbclient						      
+	natsort
+nbformat						      
+	nltk
+neo4j							      
+	numba
+parso							      
+	patsy
+pexpect							      
+	pip-check
+pycryptodome						      
+	pycurl
+python-http-client					      
+	python-editor
+pyzmq							      
+	regex
+rsa							      
+	scikit-learn
+Rx							      
+	scikit-surprise
+s3transfer						      
+	scipy
+sqlparse						      
+	statsmodels
+sshtunnel						      
+	surprise
+textwrap3						      
+	threadpoolctl
+traitlets						      
+	tslearn
+xmltodict						      
+	xgboost
+json-stream
