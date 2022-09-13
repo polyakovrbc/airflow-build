@@ -1,6 +1,5 @@
 version: '3.9'
-services:
- x-airflow:
+x-airflow:
   &airflow-main
   build:
    context: .
@@ -29,6 +28,7 @@ services:
    mysql-server:
     condition: service_healthy
 
+services:
   mysql-server:
    image: mysql:5.7
    hostname: mysql-server
