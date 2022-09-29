@@ -96,7 +96,7 @@ services:
     <<: *airflow-main
     volumes: *airflow-vol
     container_name: airflow-cel-worker-1
-    hostname: airflow-cel-worker-1
+    # hostname: airflow-cel-worker-1
     expose:
       - 8793
     entrypoint: ["/bin/bash", "-l", "-c"]
@@ -112,7 +112,7 @@ services:
     <<: *airflow-main
     volumes: *airflow-vol
     container_name: airflow-cel-worker-2
-    hostname: airflow-cel-worker-2
+    # hostname: airflow-cel-worker-2
     expose:
       - 8793
     entrypoint: ["/bin/bash", "-l", "-c"]
