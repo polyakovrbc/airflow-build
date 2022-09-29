@@ -32,6 +32,8 @@ x-airflow:
       AIRFLOW__SMTP__SMTP_USER: 'haievskyi@rbcgrp.com'
       AIRFLOW__SMTP__SMTP_PASSWORD: 'rxyktxphitdxdmeg'
       AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
+    sysctls:
+      
 
 x-volumes: &airflow-vol
       - /data/airflow/dags:/airflow/dags
@@ -94,7 +96,7 @@ services:
 
   airflow-cel-worker-1:
     <<: *airflow-main
-    volumes: *airflow-vol
+    # volumes: *airflow-vol
     container_name: airflow-cel-worker-1
     # hostname: airflow-cel-worker-1
     expose:
@@ -110,7 +112,7 @@ services:
 
   airflow-cel-worker-2:
     <<: *airflow-main
-    volumes: *airflow-vol
+    # volumes: *airflow-vol
     container_name: airflow-cel-worker-2
     # hostname: airflow-cel-worker-2
     expose:
