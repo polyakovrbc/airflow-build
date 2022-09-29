@@ -44,11 +44,11 @@ services:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
 
-  airflow-cel-worker-2:
-    profiles: ["cluster", "worker"]
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-cel-worker-2
+  # airflow-cel-worker-2:
+  #   profiles: ["cluster", "worker"]
+  #   extends:
+  #     file: airflow/airflow.yml
+  #     service: airflow-cel-worker-2
 
   airflow-cel-flower:
     profiles: ["cluster"]
