@@ -1,52 +1,61 @@
 version: '3.9'
 services:
   mysql-server:
-#   profiles: ["cluster"]
+    profiles: ["cluster", "db", "mysql-db"]
     extends:
       file: mysql-server/docker-compose.yml
       service: mysql-server
 
   greenplum-db-6:
+    profiles: ["cluster", "db", "pgsql"]
     extends:
       file: db/greenplum.yml
       service: greenplum
 
   redis:
+    profiles: ["cluster"]
     extends:
       file: redis/redis.yml
       service: redis
 
   airflow-scheduler:
+    profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-scheduler
 
   airflow-triggrer:
+    profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-triggrer
 
   airflow-webserver:
+    profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-webserver
 
   airflow-cel-worker-1:
+    profiles: ["cluster", "worker"]
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
 
   airflow-cel-worker-2:
+    profiles: ["cluster", "worker"]
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-2
 
   airflow-cel-flower:
+    profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-flower
 
   airflow-init: 
+    profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-init
