@@ -65,7 +65,7 @@ services:
   airflow-triggrer:
   #  <<: *airflow-main
    container_name: airflow-triggrer
-   volumes:
+  #  volumes:
     # <<: *airflow-vol
    hostname: airflow-triggrer
    entrypoint: ["/bin/bash", "-l", "-c"]
@@ -78,7 +78,7 @@ services:
 
   airflow-webserver:
   #  <<: *airflow-main
-   volumes:
+  #  volumes:
     # <<: *airflow-vol
    container_name: airflow-webserver
    hostname: airflow-webserver
@@ -94,7 +94,7 @@ services:
 
   airflow-cel-worker-1:
   #  <<: *airflow-main
-   volumes:
+  #  volumes:
     # <<: *airflow-vol
    container_name: airflow-cel-worker-1
    #hostname: airflow-cel-worker-1
@@ -110,7 +110,7 @@ services:
 
   airflow-cel-worker-2:
   #  <<: *airflow-main
-   volumes:
+  #  volumes:
     # <<: *airflow-vol
    container_name: airflow-cel-worker-2
    #hostname: airflow-cel-worker-2
@@ -126,7 +126,7 @@ services:
 
   airflow-cel-flower:
   #  <<: *airflow-main
-   volumes:
+  #  volumes:
     # <<: *airflow-vol
    container_name: airflow-cel-flower
    hostname: airflow-cel-flower
