@@ -145,7 +145,7 @@ services:
     volumes:
     #  <<: *airflow-vol
     depends_on:
-    #  <<: *airflow-dep
+     <<: *airflow-dep
     container_name: airflow-init
     hostname: airflow-init
     entrypoint: ["/bin/bash", "-l", "-c"]
