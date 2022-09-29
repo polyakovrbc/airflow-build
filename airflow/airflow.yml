@@ -102,7 +102,7 @@ services:
     container_name: airflow-cel-worker-1
     # hostname: airflow-cel-worker-1
     expose:
-      - 8793
+      - 8793:8793
     entrypoint: ["/bin/bash", "-l", "-c"]
     depends_on:
       <<: *airflow-dep
@@ -112,21 +112,21 @@ services:
       - |
         airflow celery worker
 
-  airflow-cel-worker-2:
-    <<: *airflow-main
-    # volumes: *airflow-vol
-    container_name: airflow-cel-worker-2
-    # hostname: airflow-cel-worker-2
-    expose:
-      - 8793
-    entrypoint: ["/bin/bash", "-l", "-c"]
-    depends_on:
-      <<: *airflow-dep
-      airflow-init:
-        condition: service_completed_successfully
-    command:
-      - |
-        airflow celery worker
+  # airflow-cel-worker-2:
+  #   <<: *airflow-main
+  #   # volumes: *airflow-vol
+  #   container_name: airflow-cel-worker-2
+  #   # hostname: airflow-cel-worker-2
+  #   expose:
+  #     - 8793
+  #   entrypoint: ["/bin/bash", "-l", "-c"]
+  #   depends_on:
+  #     <<: *airflow-dep
+  #     airflow-init:
+  #       condition: service_completed_successfully
+  #   command:
+  #     - |
+  #       airflow celery worker
 
   airflow-cel-flower:
     <<: *airflow-main
