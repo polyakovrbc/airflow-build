@@ -14,6 +14,8 @@ services:
 
   redis:
     profiles: ["cluster"]
+    ports:
+      - 6379:6379
     extends:
       file: redis/redis.yml
       service: redis
