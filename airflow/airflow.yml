@@ -53,10 +53,10 @@ services:
     container_name: airflow-scheduler
     hostname: airflow-scheduler
     volumes: *airflow-vol
-    entrypoint: ["/bin/bash", "-l", "-c"]
-    depends_on: *airflow-dep
-    depends_on:
+    depends_on: 
+      <<: *airflow-dep
       - airflow-init
+    entrypoint: ["/bin/bash", "-l", "-c"]
     command:
       - |
       airflow scheduler
