@@ -48,19 +48,19 @@ x-airflow:
 
 services:
 
-  airflow-scheduler:
-   <<: *airflow-main
-   container_name: airflow-scheduler
-   hostname: airflow-scheduler
-#   volumes:
-#    <<: *airflow-vol
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   depends_on:
-#    *airflow-dep
-    - airflow-init
-   command:
-    - |
-      airflow scheduler
+#   airflow-scheduler:
+#    <<: *airflow-main
+#    container_name: airflow-scheduler
+#    hostname: airflow-scheduler
+# #   volumes:
+# #    <<: *airflow-vol
+#    entrypoint: ["/bin/bash", "-l", "-c"]
+# #    depends_on:
+# # #    *airflow-dep
+# #     - airflow-init
+#    command:
+#     - |
+#       airflow scheduler
 
   # airflow-triggrer:
   # #  <<: *airflow-main
