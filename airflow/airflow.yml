@@ -62,83 +62,83 @@ services:
     - |
       airflow scheduler
 
-  airflow-triggrer:
-  #  <<: *airflow-main
-   container_name: airflow-triggrer
-  #  volumes:
-    # <<: *airflow-vol
-   hostname: airflow-triggrer
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   depends_on:
-    # <<: *airflow-dep
-    - airflow-init
-   command:
-    - |
-      airflow triggerer
+  # airflow-triggrer:
+  # #  <<: *airflow-main
+  #  container_name: airflow-triggrer
+  # #  volumes:
+  #   # <<: *airflow-vol
+  #  hostname: airflow-triggrer
+  #  entrypoint: ["/bin/bash", "-l", "-c"]
+  #  depends_on:
+  #   # <<: *airflow-dep
+  #   - airflow-init
+  #  command:
+  #   - |
+  #     airflow triggerer
 
-  airflow-webserver:
-  #  <<: *airflow-main
-  #  volumes:
-    # <<: *airflow-vol
-   container_name: airflow-webserver
-   hostname: airflow-webserver
-   ports:
-    - 80:80
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   depends_on:
-    - airflow-init
-    # <<: *airflow-dep
-   command:
-    - |
-      airflow webserver
+  # airflow-webserver:
+  # #  <<: *airflow-main
+  # #  volumes:
+  #   # <<: *airflow-vol
+  #  container_name: airflow-webserver
+  #  hostname: airflow-webserver
+  #  ports:
+  #   - 80:80
+  #  entrypoint: ["/bin/bash", "-l", "-c"]
+  #  depends_on:
+  #   - airflow-init
+  #   # <<: *airflow-dep
+  #  command:
+  #   - |
+  #     airflow webserver
 
-  airflow-cel-worker-1:
-  #  <<: *airflow-main
-  #  volumes:
-    # <<: *airflow-vol
-   container_name: airflow-cel-worker-1
-   #hostname: airflow-cel-worker-1
-   expose:
-    - 8793
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   depends_on:
-    # <<: *airflow-dep
-    - airflow-init
-   command:
-    - |
-      airflow celery worker
+  # airflow-cel-worker-1:
+  # #  <<: *airflow-main
+  # #  volumes:
+  #   # <<: *airflow-vol
+  #  container_name: airflow-cel-worker-1
+  #  #hostname: airflow-cel-worker-1
+  #  expose:
+  #   - 8793
+  #  entrypoint: ["/bin/bash", "-l", "-c"]
+  #  depends_on:
+  #   # <<: *airflow-dep
+  #   - airflow-init
+  #  command:
+  #   - |
+  #     airflow celery worker
 
-  airflow-cel-worker-2:
-  #  <<: *airflow-main
-  #  volumes:
-    # <<: *airflow-vol
-   container_name: airflow-cel-worker-2
-   #hostname: airflow-cel-worker-2
-   expose:
-    - 8793
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   depends_on:
-    # <<: *airflow-dep
-    - airflow-init
-   command:
-    - |
-      airflow celery worker
+  # airflow-cel-worker-2:
+  # #  <<: *airflow-main
+  # #  volumes:
+  #   # <<: *airflow-vol
+  #  container_name: airflow-cel-worker-2
+  #  #hostname: airflow-cel-worker-2
+  #  expose:
+  #   - 8793
+  #  entrypoint: ["/bin/bash", "-l", "-c"]
+  #  depends_on:
+  #   # <<: *airflow-dep
+  #   - airflow-init
+  #  command:
+  #   - |
+  #     airflow celery worker
 
-  airflow-cel-flower:
-  #  <<: *airflow-main
-  #  volumes:
-    # <<: *airflow-vol
-   container_name: airflow-cel-flower
-   hostname: airflow-cel-flower
-   depends_on:
-    # <<: *airflow-dep
-    - airflow-init
-   ports:
-    - 5555:5555
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   command:
-    - |
-      airflow celery flower
+  # airflow-cel-flower:
+  # #  <<: *airflow-main
+  # #  volumes:
+  #   # <<: *airflow-vol
+  #  container_name: airflow-cel-flower
+  #  hostname: airflow-cel-flower
+  #  depends_on:
+  #   # <<: *airflow-dep
+  #   - airflow-init
+  #  ports:
+  #   - 5555:5555
+  #  entrypoint: ["/bin/bash", "-l", "-c"]
+  #  command:
+  #   - |
+  #     airflow celery flower
 
    airflow-init: 
     <<: *airflow-main
