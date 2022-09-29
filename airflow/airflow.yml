@@ -40,11 +40,11 @@ x-airflow:
 #    - /data/ftp/ftps:/airflow/dags/ftps
 #    - /data/ftp/sftp:/airflow/dags/sftp
 
-# x-depends_on: &airflow-dep
-#     redis:
-#      condition: service_healthy
-#     mysql-server:
-#      condition: service_healthy
+x-depends_on: &airflow-dep
+    redis:
+     condition: service_healthy
+    mysql-server:
+     condition: service_healthy
 
 services:
 
