@@ -47,7 +47,7 @@ services:
 #    file: airflow/airflow.yml
 #    service: airflow-cel-flower
 
-#  airflow-init: 
-#   extends:
-#    file: airflow/airflow.yml
-#    service: airflow-init
+  airflow-init: 
+    extends:
+      file: airflow/airflow.yml
+      service: airflow-init
