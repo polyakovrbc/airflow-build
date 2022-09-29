@@ -54,7 +54,7 @@ services:
     hostname: airflow-scheduler
     volumes: *airflow-vol
     depends_on: *airflow-dep
-      # - airflow-init
+      - airflow-init
     entrypoint: ["/bin/bash", "-l", "-c"]
     command:
       - |
