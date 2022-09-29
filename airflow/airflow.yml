@@ -33,16 +33,14 @@ x-airflow:
     AIRFLOW__SMTP__SMTP_PASSWORD: 'rxyktxphitdxdmeg'
     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
 
-x-volumes:
-   &airflow-vol
+x-volumes: &airflow-vol
    - /data/airflow/dags:/airflow/dags
    - /data/airflow/logs:/airflow/logs
    - /data/airflow/plugins:/airflow/plugins
    - /data/ftp/ftps:/airflow/dags/ftps
    - /data/ftp/sftp:/airflow/dags/sftp
 
-x-depends_on:
-    &airflow-dep
+x-depends_on: &airflow-dep
     redis:
      condition: service_healthy
     mysql-server:
@@ -142,18 +140,18 @@ services:
     - |
       airflow celery flower
 
-  airflow-init: 
-   <<: *airflow-main
-   volumes:
-    <<: *airflow-vol
-   depends_on:
-    <<: *airflow-dep
-   container_name: airflow-init
-   hostname: airflow-init
-   entrypoint: ["/bin/bash", "-l", "-c"]
-   command:
-    - |
-      echo "INIT DB"
-      airflow db init;
-      sleep 20;
-      airflow users create  --username ${WEBUSR} --firstname ${WEBUSR} --lastname ${WEBUSR} --role Admin --email ${WEBMAIL} -p ${WEBPASS} ;
+   airflow-init: 
+    <<: *airflow-main
+    volumes:
+     <<: *airflow-vol
+    depends_on:
+     <<: *airflow-dep
+    container_name: airflow-init
+    hostname: airflow-init
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    command:
+     - |
+       echo "INIT DB"
+       airflow db init;
+       sleep 20;
+       airflow users create  --username ${WEBUSR} --firstname ${WEBUSR} --lastname ${WEBUSR} --role Admin --email ${WEBMAIL} -p ${WEBPASS} ;
