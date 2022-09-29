@@ -55,6 +55,7 @@ services:
     volumes: *airflow-vol
     entrypoint: ["/bin/bash", "-l", "-c"]
     depends_on: *airflow-dep
+    depends_on:
       - airflow-init
     command:
       - |
