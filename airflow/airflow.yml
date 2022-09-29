@@ -1,55 +1,55 @@
 version: '3.9'
-x-airflow:
-   &airflow-main
-   build:
-    context: .
-   environment:
-    #&airflow-env
-    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
-    # For backward compatibility, with Airflow <2.3
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
-    AIRFLOW__CELERY__RESULT_BACKEND: db+mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
-    AIRFLOW__CELERY__BROKER_URL: redis://${BROKER}:6379/0
-    AIRFLOW__CORE__FERNET_KEY: ''
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-    AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
-    #AIRFLOW_CONFIG: "/etc/airflow/airflow.cfg"
-    AIRFLOW_HOME: "/airflow"
-    AIRFLOW__CORE__KILLED_TASK_CLEANUP_TIME: 5
-    AIRFLOW__CORE__DAGS_FOLDER: "/airflow/dags"
-    AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS: 'false'
-    AIRFLOW__CORE__MIN_SERIALIZED_DAG_UPDATE_INTERVAL: 5
-    AIRFLOW__CORE__MIN_SERIALIZED_DAG_FETCH_INTERVAL: 5
-    AIRFLOW__WEBSERVER__WEB_SERVER_PORT: 80
-    AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 10
-    AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
-    AIRFLOW__SMTP__SMTP_STARTTLS: 'false'
-    AIRFLOW__SMTP__SMTP_SSL: 'true'
-    AIRFLOW__SMTP__SMTP_PORT: 465
-    AIRFLOW__SMTP__SMTP_MAIL_FROM: 'haievskyi@rbcgrp.com'
-    AIRFLOW__SMTP__SMTP_USER: 'haievskyi@rbcgrp.com'
-    AIRFLOW__SMTP__SMTP_PASSWORD: 'rxyktxphitdxdmeg'
-    AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
+# x-airflow:
+#    &airflow-main
+#    build:
+#     context: .
+#    environment:
+#     #&airflow-env
+#     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+#     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
+#     # For backward compatibility, with Airflow <2.3
+#     AIRFLOW__CORE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
+#     AIRFLOW__CELERY__RESULT_BACKEND: db+mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
+#     AIRFLOW__CELERY__BROKER_URL: redis://${BROKER}:6379/0
+#     AIRFLOW__CORE__FERNET_KEY: ''
+#     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+#     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+#     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+#     #AIRFLOW_CONFIG: "/etc/airflow/airflow.cfg"
+#     AIRFLOW_HOME: "/airflow"
+#     AIRFLOW__CORE__KILLED_TASK_CLEANUP_TIME: 5
+#     AIRFLOW__CORE__DAGS_FOLDER: "/airflow/dags"
+#     AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS: 'false'
+#     AIRFLOW__CORE__MIN_SERIALIZED_DAG_UPDATE_INTERVAL: 5
+#     AIRFLOW__CORE__MIN_SERIALIZED_DAG_FETCH_INTERVAL: 5
+#     AIRFLOW__WEBSERVER__WEB_SERVER_PORT: 80
+#     AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 10
+#     AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
+#     AIRFLOW__SMTP__SMTP_STARTTLS: 'false'
+#     AIRFLOW__SMTP__SMTP_SSL: 'true'
+#     AIRFLOW__SMTP__SMTP_PORT: 465
+#     AIRFLOW__SMTP__SMTP_MAIL_FROM: 'haievskyi@rbcgrp.com'
+#     AIRFLOW__SMTP__SMTP_USER: 'haievskyi@rbcgrp.com'
+#     AIRFLOW__SMTP__SMTP_PASSWORD: 'rxyktxphitdxdmeg'
+#     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
 
-x-volumes: &airflow-vol
-   - /data/airflow/dags:/airflow/dags
-   - /data/airflow/logs:/airflow/logs
-   - /data/airflow/plugins:/airflow/plugins
-   - /data/ftp/ftps:/airflow/dags/ftps
-   - /data/ftp/sftp:/airflow/dags/sftp
+# x-volumes: &airflow-vol
+#    - /data/airflow/dags:/airflow/dags
+#    - /data/airflow/logs:/airflow/logs
+#    - /data/airflow/plugins:/airflow/plugins
+#    - /data/ftp/ftps:/airflow/dags/ftps
+#    - /data/ftp/sftp:/airflow/dags/sftp
 
-x-depends_on: &airflow-dep
-    redis:
-     condition: service_healthy
-    mysql-server:
-     condition: service_healthy
+# x-depends_on: &airflow-dep
+#     redis:
+#      condition: service_healthy
+#     mysql-server:
+#      condition: service_healthy
 
 services:
 
   airflow-scheduler:
-   <<: *airflow-main
+  #  <<: *airflow-main
    container_name: airflow-scheduler
    hostname: airflow-scheduler
 #   volumes:
