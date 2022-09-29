@@ -33,12 +33,12 @@ x-airflow:
     AIRFLOW__SMTP__SMTP_PASSWORD: 'rxyktxphitdxdmeg'
     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
 
-# x-volumes: &airflow-vol
-#    - /data/airflow/dags:/airflow/dags
-#    - /data/airflow/logs:/airflow/logs
-#    - /data/airflow/plugins:/airflow/plugins
-#    - /data/ftp/ftps:/airflow/dags/ftps
-#    - /data/ftp/sftp:/airflow/dags/sftp
+x-volumes: &airflow-vol
+   - /data/airflow/dags:/airflow/dags
+   - /data/airflow/logs:/airflow/logs
+   - /data/airflow/plugins:/airflow/plugins
+   - /data/ftp/ftps:/airflow/dags/ftps
+   - /data/ftp/sftp:/airflow/dags/sftp
 
 x-depends_on: &airflow-dep
     redis:
@@ -143,7 +143,7 @@ services:
    airflow-init: 
     <<: *airflow-main
     volumes:
-    #  <<: *airflow-vol
+     <<: *airflow-vol
     depends_on:
      <<: *airflow-dep
     container_name: airflow-init
