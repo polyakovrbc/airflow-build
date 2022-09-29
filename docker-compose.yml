@@ -16,10 +16,10 @@ services:
       file: redis/redis.yml
       service: redis
 
-  airflow-scheduler:
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-scheduler
+  # airflow-scheduler:
+  #   extends:
+  #     file: airflow/airflow.yml
+  #     service: airflow-scheduler
 
 #  airflow-triggrer:
 #   extends:
