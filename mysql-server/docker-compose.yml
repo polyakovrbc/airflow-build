@@ -1,0 +1,25 @@
+services:
+  mysql-server:
+   image: mysql:5.7
+   hostname: mysql-server
+   environment:
+    MYSQL_DATABASE: "${MDB}"
+    MYSQL_USER: "${MUSER}"
+    MYSQL_PASSWORD: "${MPASS}"
+    MYSQL_ROOT_PASSWORD: "${MROOT}"
+   ports:
+    - '3306:3306'
+   mem_limit: 1024m
+   container_name: mysql-server
+   cpus: 1
+   command: --connect-timeout=120 --explicit-defaults-for-timestamp=ON --max-allowed-packet=1G --wait-timeout=86400 --interactive-timeout=86400 --default-authentication-plugin=mysql_native_password
+   expose:
+    - '3306'
+   volumes:
+    - /data/mysql:/var/lib/mysql
+    - ./scripts/socket.sql:/docker-entrypoint-initdb.d/socket.sql
+   restart: always
+   healthcheck:
+    test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+    timeout: 20s
+    retries: 10
