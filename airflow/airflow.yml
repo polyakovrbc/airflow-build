@@ -141,7 +141,7 @@ services:
       airflow celery flower
 
    airflow-init: 
-    # <<: *airflow-main
+    <<: *airflow-main
     volumes:
     #  <<: *airflow-vol
     depends_on:
