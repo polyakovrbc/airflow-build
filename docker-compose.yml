@@ -59,9 +59,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${MROOT}"
     ports:
       - '3306:3306'
-    mem_limit: 1024m
     container_name: mysql-server
-    cpus: 1
     command: --connect-timeout=120 --explicit-defaults-for-timestamp=ON --max-allowed-packet=1G --wait-timeout=86400 --interactive-timeout=86400 --default-authentication-plugin=mysql_native_password
     expose:
       - '3306'
@@ -74,6 +72,11 @@ services:
       timeout: 20s
       retries: 10
     profiles: ["cluster", "db", "mysql-db"]
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1024M
     networks:
       - backend
 
@@ -82,8 +85,6 @@ services:
     hostname: greenplum
     ports:
        - '25432:5432'
-    mem_limit: 4024m
-    cpus: 4
     expose:
       - '5432'
     volumes:
@@ -102,6 +103,11 @@ services:
         su - gpadmin -c "source /opt/greenplum-db-6.19.1/greenplum_path.sh; /home/gpadmin/init.sh";
         ping localhost
     profiles: ["cluster", "db", "pgsql"]
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 4024M
     networks:
       - backend
 
@@ -119,6 +125,11 @@ services:
       timeout: 20s
       retries: 10
     profiles: ["cluster"]
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 512M
     ports:
       - 6379:6379
     networks:
