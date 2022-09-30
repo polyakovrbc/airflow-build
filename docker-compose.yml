@@ -5,12 +5,16 @@ services:
     extends:
       file: mysql-server/docker-compose.yml
       service: mysql-server
+    networks:
+      - backend
 
   greenplum-db-6:
     profiles: ["cluster", "db", "pgsql"]
     extends:
       file: db/greenplum.yml
       service: greenplum
+    networks:
+      - backend
 
   redis:
     profiles: ["cluster"]
@@ -19,24 +23,32 @@ services:
     extends:
       file: redis/redis.yml
       service: redis
+    networks:
+      - backend
 
   airflow-scheduler:
     profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-scheduler
+    networks:
+      - backend
 
   airflow-triggrer:
     profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-triggrer
+    networks:
+      - backend
 
   airflow-webserver:
     profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-webserver
+    networks:
+      - backend
 
   airflow-cel-worker-1:
     profiles: ["cluster", "worker"]
@@ -47,6 +59,8 @@ services:
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
+    networks:
+      - backend
 
   airflow-cel-worker-2:
     profiles: ["cluster", "worker"]
@@ -57,6 +71,8 @@ services:
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
+    networks:
+      - backend
 
   airflow-cel-worker-3:
     profiles: ["cluster", "worker"]
@@ -67,15 +83,29 @@ services:
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
+    networks:
+      - backend
 
   airflow-cel-flower:
     profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-flower
+    networks:
+      - backend
 
   airflow-init: 
     profiles: ["cluster"]
     extends:
       file: airflow/airflow.yml
       service: airflow-init
+    networks:
+      - backend
+
+networks:
+    backend:
+     driver: overlay
+     attachable: true
+     ipam:
+       config:
+         - subnet: 10.10.10.0/24

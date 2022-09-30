@@ -101,8 +101,13 @@ services:
     # volumes: *airflow-vol
     #container_name: airflow-cel-worker-1
     # hostname: airflow-cel-worker-1
-    ports:
-      - 8793:8793
+    #ports:
+    #  - target: 8793
+    #    published: 8793
+    #    protocol: tcp
+    #    mode: host
+    expose:
+     - 8793
     entrypoint: ["/bin/bash", "-l", "-c"]
     depends_on:
       <<: *airflow-dep
