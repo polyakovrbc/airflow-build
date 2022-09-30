@@ -219,8 +219,7 @@ services:
     volumes: *airflow-vol
     container_name: airflow-cel-flower
     hostname: airflow-cel-flower
-    depends_on:
-      <<: *airflow-dep
+    depends_on: *airflow-dep
       airflow-init:
         condition: service_completed_successfully
     ports:
