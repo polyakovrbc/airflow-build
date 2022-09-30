@@ -1,104 +1,244 @@
 version: '3.9'
+x-airflow:
+    &airflow-main
+    build:
+      context: airflow/Dockerfile
+    environment:
+      #&airflow-env
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
+      # For backward compatibility, with Airflow <2.3
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
+      AIRFLOW__CELERY__RESULT_BACKEND: db+mysql://${MUSER}:${MPASS}@${DBHOST}/${MDB}
+      AIRFLOW__CELERY__BROKER_URL: redis://${BROKER}:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      #AIRFLOW_CONFIG: "/etc/airflow/airflow.cfg"
+      AIRFLOW_HOME: "/airflow"
+      AIRFLOW__CORE__KILLED_TASK_CLEANUP_TIME: 5
+      AIRFLOW__CORE__DAGS_FOLDER: "/airflow/dags"
+      AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS: 'false'
+      AIRFLOW__CORE__MIN_SERIALIZED_DAG_UPDATE_INTERVAL: 5
+      AIRFLOW__CORE__MIN_SERIALIZED_DAG_FETCH_INTERVAL: 5
+      AIRFLOW__WEBSERVER__WEB_SERVER_PORT: 80
+      AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 10
+      AIRFLOW__WEBSERVER__SECRET_KEY: ${ASC}
+      AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
+      AIRFLOW__SMTP__SMTP_STARTTLS: 'false'
+      AIRFLOW__SMTP__SMTP_SSL: 'true'
+      AIRFLOW__SMTP__SMTP_PORT: 465
+      AIRFLOW__SMTP__SMTP_MAIL_FROM: ${SMTPUSER}
+      AIRFLOW__SMTP__SMTP_USER: ${SMTPUSER}
+      AIRFLOW__SMTP__SMTP_PASSWORD: ${SMTPPASS}
+      AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
+      AIRFLOW__CORE__HOSTNAME_CALLABLE: 'airflow.utils.net:get_host_ip_address'
+    sysctls:
+      
+
+x-volumes: &airflow-vol
+      - /data/airflow/dags:/airflow/dags
+      - /data/airflow/logs:/airflow/logs
+      - /data/airflow/plugins:/airflow/plugins
+      - /data/ftp/ftps:/airflow/dags/ftps
+      - /data/ftp/sftp:/airflow/dags/sftp
+
+x-depends_on: &airflow-dep
+      redis:
+        condition: service_healthy
+      mysql-server:
+        condition: service_healthy
 services:
   mysql-server:
-    profiles: ["cluster", "db", "mysql-db"]
-    extends:
-      file: mysql-server/docker-compose.yml
-      service: mysql-server
+    image: mysql:5.7
+    hostname: mysql-server
+    environment:
+      MYSQL_DATABASE: "${MDB}"
+      MYSQL_USER: "${MUSER}"
+      MYSQL_PASSWORD: "${MPASS}"
+      MYSQL_ROOT_PASSWORD: "${MROOT}"
+    ports:
+      - '3306:3306'
+    mem_limit: 1024m
+    container_name: mysql-server
+    cpus: 1
+    command: --connect-timeout=120 --explicit-defaults-for-timestamp=ON --max-allowed-packet=1G --wait-timeout=86400 --interactive-timeout=86400 --default-authentication-plugin=mysql_native_password
+    expose:
+      - '3306'
+    volumes:
+      - /data/mysql:/var/lib/mysql
+      - ./mysql-server/scripts/socket.sql:/docker-entrypoint-initdb.d/socket.sql
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+      profiles: ["cluster", "db", "mysql-db"]
     networks:
       - backend
 
   greenplum-db-6:
+    image: polyakovrbc/greenplum-db-6
+    hostname: greenplum
+    ports:
+       - '25432:5432'
+    mem_limit: 4024m
+    cpus: 4
+    expose:
+      - '5432'
+    volumes:
+      - '/data/greenplum/master:/data/master'
+      - '/data/greenplum/primary:/data/primary'
+      - '/data/greenplum/backups:/data/backups'
+    restart: always
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        echo "---------------------INIT DB-----------------------" ;
+        service ssh start;
+        chown -R gpadmin:gpadmin /data;
+        ls -al /data/ ;
+        su - gpadmin -c "source /opt/greenplum-db-6.19.1/greenplum_path.sh; /home/gpadmin/init.sh";
+        ping localhost
     profiles: ["cluster", "db", "pgsql"]
-    extends:
-      file: db/greenplum.yml
-      service: greenplum
     networks:
       - backend
 
   redis:
+    image: redis
+    restart: always
+    hostname: redis
+    container_name: redis
+    expose:
+     - 6379
+    mem_limit: 512m
+    cpus: 1
+    healthcheck:
+    test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+    timeout: 20s
+    retries: 10
     profiles: ["cluster"]
     ports:
       - 6379:6379
-    extends:
-      file: redis/redis.yml
-      service: redis
     networks:
       - backend
 
   airflow-scheduler:
+    <<: *airflow-main
+    container_name: airflow-scheduler
+    hostname: airflow-scheduler
+    volumes: *airflow-vol
+    depends_on: 
+      <<: *airflow-dep
+      airflow-init:
+        condition: service_completed_successfully
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    command:
+      - |
+        airflow scheduler
     profiles: ["cluster"]
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-scheduler
     networks:
       - backend
 
   airflow-triggrer:
+    <<: *airflow-main
+    container_name: airflow-triggrer
+    volumes: *airflow-vol
+    hostname: airflow-triggrer
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    depends_on:
+      <<: *airflow-dep
+      airflow-init:
+        condition: service_completed_successfully
+    command:
+      - |
+        airflow triggerer
     profiles: ["cluster"]
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-triggrer
     networks:
       - backend
 
   airflow-webserver:
+    <<: *airflow-main
+    volumes: *airflow-vol
+    container_name: airflow-webserver
+    hostname: airflow-webserver
+    ports:
+      - 80:80
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+      <<: *airflow-dep
+    command:
+      - |
+        airflow webserver
     profiles: ["cluster"]
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-webserver
     networks:
       - backend
 
   airflow-cel-worker-1:
+    <<: *airflow-main
+    # volumes: *airflow-vol
+    #container_name: airflow-cel-worker-1
+    # hostname: airflow-cel-worker-1
+    #ports:
+    #  - target: 8793
+    #    published: 8793
+    #    protocol: tcp
+    #    mode: host
+    expose:
+     - 8793
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    depends_on:
+      <<: *airflow-dep
+      airflow-init:
+        condition: service_completed_successfully
+    command:
+      - |
+        airflow celery worker
     profiles: ["cluster", "worker"]
     deploy:
       placement:
         constraints:
           - "node.labels.TAG==rain3"
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-cel-worker-1
-    networks:
-      - backend
-
-  airflow-cel-worker-2:
-    profiles: ["cluster", "worker"]
-    deploy:
-      placement:
-        constraints:
-          - "node.labels.TAG==rain2"
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-cel-worker-1
-    networks:
-      - backend
-
-  airflow-cel-worker-3:
-    profiles: ["cluster", "worker"]
-    deploy:
-      placement:
-        constraints:
-          - "node.labels.TAG==rain"
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-cel-worker-1
     networks:
       - backend
 
   airflow-cel-flower:
+    <<: *airflow-main
+    volumes: *airflow-vol
+    container_name: airflow-cel-flower
+    hostname: airflow-cel-flower
+    depends_on:
+      <<: *airflow-dep
+      airflow-init:
+        condition: service_completed_successfully
+    ports:
+      - 5555:5555
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    command:
+      - |
+        airflow celery flower
     profiles: ["cluster"]
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-cel-flower
     networks:
       - backend
 
   airflow-init: 
+    <<: *airflow-main
+    volumes: *airflow-vol
+    depends_on: *airflow-dep
+    container_name: airflow-init
+    hostname: airflow-init
+    entrypoint: ["/bin/bash", "-l", "-c"]
+    command:
+     - |
+       echo "INIT DB"
+       airflow db init;
+       sleep 20;
+       airflow users create  --username ${WEBUSR} --firstname ${WEBUSR} --lastname ${WEBUSR} --role Admin --email ${WEBMAIL} -p ${WEBPASS} ;
     profiles: ["cluster"]
-    extends:
-      file: airflow/airflow.yml
-      service: airflow-init
     networks:
       - backend
 
