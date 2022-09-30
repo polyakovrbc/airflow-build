@@ -118,8 +118,6 @@ services:
     container_name: redis
     expose:
      - 6379
-    mem_limit: 512m
-    cpus: 1
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       timeout: 20s
