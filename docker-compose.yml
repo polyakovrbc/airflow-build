@@ -34,7 +34,6 @@ x-airflow:
       AIRFLOW__SMTP__SMTP_PASSWORD: ${SMTPPASS}
       AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
       AIRFLOW__CORE__HOSTNAME_CALLABLE: 'airflow.utils.net:get_host_ip_address'
-    sysctls:
       
 
 x-volumes: &airflow-vol
@@ -74,7 +73,7 @@ services:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
-      profiles: ["cluster", "db", "mysql-db"]
+    profiles: ["cluster", "db", "mysql-db"]
     networks:
       - backend
 
@@ -116,9 +115,9 @@ services:
     mem_limit: 512m
     cpus: 1
     healthcheck:
-    test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-    timeout: 20s
-    retries: 10
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      timeout: 20s
+      retries: 10
     profiles: ["cluster"]
     ports:
       - 6379:6379
