@@ -40,15 +40,33 @@ services:
 
   airflow-cel-worker-1:
     profiles: ["cluster", "worker"]
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.TAG==rain3"
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
 
-  # airflow-cel-worker-2:
-  #   profiles: ["cluster", "worker"]
-  #   extends:
-  #     file: airflow/airflow.yml
-  #     service: airflow-cel-worker-2
+  airflow-cel-worker-2:
+    profiles: ["cluster", "worker"]
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.TAG==rain2"
+    extends:
+      file: airflow/airflow.yml
+      service: airflow-cel-worker-1
+
+  airflow-cel-worker-3:
+    profiles: ["cluster", "worker"]
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.TAG==rain"
+    extends:
+      file: airflow/airflow.yml
+      service: airflow-cel-worker-1
 
   airflow-cel-flower:
     profiles: ["cluster"]
