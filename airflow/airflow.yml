@@ -99,7 +99,7 @@ services:
   airflow-cel-worker-1:
     <<: *airflow-main
     # volumes: *airflow-vol
-    container_name: airflow-cel-worker-1
+    #container_name: airflow-cel-worker-1
     # hostname: airflow-cel-worker-1
     ports:
       - 8793:8793
