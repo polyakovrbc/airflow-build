@@ -58,11 +58,14 @@ services:
       MYSQL_PASSWORD: "${MPASS}"
       MYSQL_ROOT_PASSWORD: "${MROOT}"
     ports:
-      - 3306:3306
+    - mode: ingress
+      target: 3306
+      published: 3306
+      protocol: tcp
     container_name: mysql-server
     command: --connect-timeout=120 --explicit-defaults-for-timestamp=ON --max-allowed-packet=1G --wait-timeout=86400 --interactive-timeout=86400 --default-authentication-plugin=mysql_native_password
     expose:
-      - '3306'
+      - 3306
     volumes:
       - /data/mysql:/var/lib/mysql
       - ./mysql-server/scripts/socket.sql:/docker-entrypoint-initdb.d/socket.sql
@@ -88,7 +91,10 @@ services:
     image: polyakovrbc/greenplum-db-6
     hostname: greenplum
     ports:
-       - 25432:5432
+    - mode: ingress
+      target: 5432
+      published: 25432
+      protocol: tcp
     expose:
       - 5432
     volumes:
@@ -141,7 +147,10 @@ services:
           cpus: '1'
           memory: 512M
     ports:
-      - 6379:6379
+    - mode: ingress
+      target: 6379
+      published: 6379
+      protocol: tcp
     networks:
       - backend
 
@@ -195,7 +204,10 @@ services:
     container_name: airflow-webserver
     hostname: airflow-webserver
     ports:
-      - 80:80
+    - mode: ingress
+      target: 80
+      published: 80
+      protocol: tcp
     entrypoint: ["/bin/bash", "-l", "-c"]
     # depends_on:
     #   airflow-init:
@@ -254,7 +266,10 @@ services:
     #   airflow-init:
     #     condition: service_completed_successfully
     ports:
-      - 5555:5555
+    - mode: ingress
+      target: 5555
+      published: 5555
+      protocol: tcp
     entrypoint: ["/bin/bash", "-l", "-c"]
     command:
       - |
