@@ -43,12 +43,12 @@ x-volumes: &airflow-vol
       - /data/ftp/ftps:/airflow/dags/ftps
       - /data/ftp/sftp:/airflow/dags/sftp
 
-x-depends_on: 
-      &airflow-dep
-      redis:
-        condition: service_healthy
-      mysql-server:
-        condition: service_healthy
+# x-depends_on: 
+#       &airflow-dep
+#       redis:
+#         condition: service_healthy
+#       mysql-server:
+#         condition: service_healthy
 services:
   mysql-server:
     image: mysql:5.7
@@ -72,7 +72,7 @@ services:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
-    profiles: ["cluster", "db", "mysql-db"]
+    # profiles: ["cluster", "db", "mysql-db"]
     deploy:
       resources:
         limits:
@@ -103,7 +103,7 @@ services:
         ls -al /data/ ;
         su - gpadmin -c "source /opt/greenplum-db-6.19.1/greenplum_path.sh; /home/gpadmin/init.sh";
         ping localhost
-    profiles: ["cluster", "db", "pgsql"]
+    # profiles: ["cluster", "db", "pgsql"]
     deploy:
       resources:
         limits:
@@ -123,7 +123,7 @@ services:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       timeout: 20s
       retries: 10
-    profiles: ["cluster"]
+    # profiles: ["cluster"]
     deploy:
       resources:
         limits:
@@ -147,7 +147,7 @@ services:
     command:
       - |
         airflow scheduler
-    profiles: ["cluster"]
+    # profiles: ["cluster"]
     networks:
       - backend
 
@@ -164,7 +164,7 @@ services:
     command:
       - |
         airflow triggerer
-    profiles: ["cluster"]
+    # profiles: ["cluster"]
     networks:
       - backend
 
@@ -183,7 +183,7 @@ services:
     command:
       - |
         airflow webserver
-    profiles: ["cluster"]
+    # profiles: ["cluster"]
     networks:
       - backend
 
@@ -207,7 +207,7 @@ services:
     command:
       - |
         airflow celery worker
-    profiles: ["cluster", "worker"]
+    # profiles: ["cluster", "worker"]
     deploy:
       placement:
         constraints:
@@ -230,7 +230,7 @@ services:
     command:
       - |
         airflow celery flower
-    profiles: ["cluster"]
+    # profiles: ["cluster"]
     networks:
       - backend
 
@@ -252,7 +252,7 @@ services:
        airflow db init;
        sleep 20;
        airflow users create  --username ${WEBUSR} --firstname ${WEBUSR} --lastname ${WEBUSR} --role Admin --email ${WEBMAIL} -p ${WEBPASS} ;
-    profiles: ["cluster"]
+    # profiles: ["cluster"]
     networks:
       - backend
 
