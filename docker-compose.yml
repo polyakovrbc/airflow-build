@@ -73,6 +73,7 @@ services:
       retries: 10
     # profiles: ["cluster", "db", "mysql-db"]
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
@@ -107,6 +108,7 @@ services:
         ping localhost
     # profiles: ["cluster", "db", "pgsql"]
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
@@ -130,6 +132,7 @@ services:
       retries: 10
     # profiles: ["cluster"]
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
@@ -148,6 +151,7 @@ services:
     hostname: airflow-scheduler
     volumes: *airflow-vol
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
@@ -168,6 +172,7 @@ services:
     container_name: airflow-triggrer
     volumes: *airflow-vol
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
@@ -200,6 +205,8 @@ services:
       - |
         airflow webserver
     # profiles: ["cluster"]
+    deploy:
+      replicas: 1
     networks:
       - backend
 
@@ -225,6 +232,7 @@ services:
         airflow celery worker
     # profiles: ["cluster", "worker"]
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain2"
@@ -237,6 +245,7 @@ services:
     container_name: airflow-cel-flower
     hostname: airflow-cel-flower
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
@@ -266,6 +275,7 @@ services:
     container_name: airflow-init
     hostname: airflow-init
     deploy:
+      replicas: 1
       placement:
         constraints:
           - "node.labels.TAG==rain3"
