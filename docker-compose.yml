@@ -74,6 +74,9 @@ services:
       retries: 10
     # profiles: ["cluster", "db", "mysql-db"]
     deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
       resources:
         limits:
           cpus: '1'
@@ -105,6 +108,9 @@ services:
         ping localhost
     # profiles: ["cluster", "db", "pgsql"]
     deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
       resources:
         limits:
           cpus: '4'
@@ -125,6 +131,9 @@ services:
       retries: 10
     # profiles: ["cluster"]
     deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
       resources:
         limits:
           cpus: '1'
@@ -139,6 +148,10 @@ services:
     container_name: airflow-scheduler
     hostname: airflow-scheduler
     volumes: *airflow-vol
+    deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
     # depends_on: 
     #   <<: *airflow-dep
     #   airflow-init:
@@ -155,6 +168,10 @@ services:
     <<: *airflow-main
     container_name: airflow-triggrer
     volumes: *airflow-vol
+    deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
     hostname: airflow-triggrer
     entrypoint: ["/bin/bash", "-l", "-c"]
     # depends_on:
@@ -211,7 +228,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.labels.TAG==rain3"
+          - "node.description.hostname==rain2"
     networks:
       - backend
 
@@ -220,6 +237,10 @@ services:
     volumes: *airflow-vol
     container_name: airflow-cel-flower
     hostname: airflow-cel-flower
+    deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
     # depends_on: 
     #   <<: *airflow-dep
     #   airflow-init:
@@ -245,6 +266,10 @@ services:
     #     condition: service_healthy
     container_name: airflow-init
     hostname: airflow-init
+    deploy:
+      placement:
+        constraints:
+          - "node.description.hostname==rain3"
     entrypoint: ["/bin/bash", "-l", "-c"]
     command:
      - |
