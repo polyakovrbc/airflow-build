@@ -32,7 +32,7 @@ x-airflow:
       AIRFLOW__SMTP__SMTP_USER: ${SMTPUSER}
       AIRFLOW__SMTP__SMTP_PASSWORD: ${SMTPPASS}
       AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
-      AIRFLOW__CORE__HOSTNAME_CALLABLE: 'airflow.utils.net:get_host_ip_address'
+      #AIRFLOW__CORE__HOSTNAME_CALLABLE: 'airflow.utils.net:get_host_ip_address'
       
 
 x-volumes: &airflow-vol
