@@ -1,7 +1,7 @@
 version: '3.9'
 x-airflow:
     &airflow-main
-    image: airflow:latest
+    image: polyakovrbc/airflow2:latest
     environment:
       #&airflow-env
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
