@@ -58,7 +58,7 @@ services:
       MYSQL_PASSWORD: "${MPASS}"
       MYSQL_ROOT_PASSWORD: "${MROOT}"
     ports:
-      - '3306:3306'
+      - 3306:3306
     container_name: mysql-server
     command: --connect-timeout=120 --explicit-defaults-for-timestamp=ON --max-allowed-packet=1G --wait-timeout=86400 --interactive-timeout=86400 --default-authentication-plugin=mysql_native_password
     expose:
@@ -88,9 +88,9 @@ services:
     image: polyakovrbc/greenplum-db-6
     hostname: greenplum
     ports:
-       - '25432:5432'
+       - 25432:5432
     expose:
-      - '5432'
+      - 5432
     volumes:
       - '/data/greenplum/master:/data/master'
       - '/data/greenplum/primary:/data/primary'
