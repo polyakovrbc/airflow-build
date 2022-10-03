@@ -43,7 +43,8 @@ x-volumes: &airflow-vol
       - /data/ftp/ftps:/airflow/dags/ftps
       - /data/ftp/sftp:/airflow/dags/sftp
 
-x-depends_on: &airflow-dep
+x-depends_on: 
+      &airflow-dep
       redis:
         condition: service_healthy
       mysql-server:
