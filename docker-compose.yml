@@ -1,8 +1,7 @@
 version: '3.9'
 x-airflow:
     &airflow-main
-    build:
-      context: airflow/Dockerfile
+    image: airflow:latest
     environment:
       #&airflow-env
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
