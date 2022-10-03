@@ -238,7 +238,11 @@ services:
     <<: *airflow-main
     volumes: *airflow-vol
     depends_on: 
-      <<: *airflow-dep
+      # <<: *airflow-dep
+      redis:
+        condition: service_healthy
+      mysql-server:
+        condition: service_healthy
     container_name: airflow-init
     hostname: airflow-init
     entrypoint: ["/bin/bash", "-l", "-c"]
