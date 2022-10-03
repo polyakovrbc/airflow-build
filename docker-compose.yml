@@ -75,7 +75,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
       resources:
         limits:
           cpus: '1'
@@ -109,7 +109,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
       resources:
         limits:
           cpus: '4'
@@ -132,7 +132,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
       resources:
         limits:
           cpus: '1'
@@ -150,7 +150,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
     # depends_on: 
     #   <<: *airflow-dep
     #   airflow-init:
@@ -170,7 +170,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
     hostname: airflow-triggrer
     entrypoint: ["/bin/bash", "-l", "-c"]
     # depends_on:
@@ -227,7 +227,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain2"
+          - "node.labels.TAG==rain2"
     networks:
       - backend
 
@@ -239,7 +239,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
     # depends_on: 
     #   <<: *airflow-dep
     #   airflow-init:
@@ -268,7 +268,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.description.hostname==rain3"
+          - "node.labels.TAG==rain3"
     entrypoint: ["/bin/bash", "-l", "-c"]
     command:
      - |
