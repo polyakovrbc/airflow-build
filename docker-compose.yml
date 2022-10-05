@@ -7,7 +7,7 @@ services:
       service: mysql-server
     networks:
       - backend
-      
+
   greenplum-db-6:
     profiles: ["cluster", "db", "pgsql"]
     extends:
@@ -91,7 +91,7 @@ services:
       - backend
 
 networks:
-  beckend:
+  backend:
     driver: bridge
     attachable: true
     ipam:
