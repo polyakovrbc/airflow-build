@@ -43,8 +43,6 @@ services:
     extends:
       file: airflow/airflow.yml
       service: airflow-cel-worker-1
-    networks:
-      - backend
 
   airflow-cel-worker-2:
     profiles: ["cluster", "worker"]
